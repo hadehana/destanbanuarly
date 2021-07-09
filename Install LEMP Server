@@ -1,0 +1,46 @@
+# Latest Nginx Stable repository NO
+# sudo add-apt-repository ppa:nginx/stable
+# Latest Nginx Custom repository
+sudo add-apt-repository ppa:brianmercer/nginx
+# Latest PHP 5.4
+sudo add-apt-repository ppa:ondrej/php5
+# Latest phpMyAdmin
+sudo add-apt-repository ppa:nijel/phpmyadmin
+
+sudo apt-get update
+
+sudo apt-get install mysql-server
+sudo vi /etc/mysql/conf.d/wordpress_1CPU_1GB.cnf
+sudo service mysql restart
+
+sudo apt-get install nginx-custom wget -y
+sudo apt-get install php5-common php5-mysqlnd php5-xmlrpc php5-cgi php5-curl php5-gd php5-cli php5-fpm php-apc php5-dev php5-mcrypt php5-intl php5-tidy php5-imagick php5-pspell php-pear phpmyadmin -y
+
+sudo vi /etc/nginx/nginx.conf
+# For 1 CPU
+worker_processes 1;
+
+events {
+        worker_connections 256;
+}
+
+http {
+        server_tokens off;
+        client_max_body_size 8m;
+        reset_timedout_connection on;
+        index index.php index.html index.htm;
+        upstream php5-fpm {
+                keepalive 8;
+                server unix:/var/run/php5-fpm.sock;
+        }
+}
+
+
+sudo vi /etc/nginx/conf.d/wordpress-mu.conf
+sudo vi /etc/nginx/conf.d/restrictions.conf
+
+sudo chown -R www-data:www-data /var/www/wordpress
+
+sudo service nginx configtest
+sudo service nginx restart
+sudo tail /var/log/nginx/error.log
