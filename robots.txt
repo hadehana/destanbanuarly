@@ -1,1 +1,5 @@
 
+User-agent: *
+Allow: /
+
+Sitemap: https://destanbanuarly.eu.org/sitemap.xml
