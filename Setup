@@ -1,0 +1,21 @@
+sudo vi /var/www/wordpress/wp-config.php
+define('WPLANG', 'cs_CZ');
+define('FORCE_SSL_ADMIN', true);
+define('FORCE_SSL_LOGIN', true);
+define('DISABLE_WP_CRON', true);
+define('WP_ALLOW_MULTISITE', true);
+
+sudo crontab -e
+*/5 * * * * /usr/bin/php5 -q /var/www/wordpress/wp-cron.php > /dev/null 2>&1
+
+sudo vi /var/www/wordpress/.htaccess
+# protect wp-config
+<files wp-config.php>
+order deny,allow
+deny from all
+</files>
+# protect wp-cron
+<files wp-cron.php>
+order deny,allow
+deny from all
+</files>
